@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+
+<project name="ant-jmeter" default="all" basedir="C:\Users\Administrator\Desktop\JMeter and jdk\apache-jmeter-3.1">
+<tstamp> 
+  <format property="time" pattern="2018-3-22"/>  
+  </tstamp>
+  <!-- 生成的报告的前缀和定义结果集的相关参?-->
+    <property name="ReportName" value="TestReport"/>
+    <property name="jmeter.result.jtlName" value="${jmeter.result.jtl.dir}"/>
+    <property name="jmeter.result.htmlName" value="${jmeter.result.html.dir}"/>
+    
+    <!--需要改成自己本地的jmeter 目录 -->
+    <property name="jmeter.home" value="C:\Users\Administrator\Desktop\JMeter and jdk\apache-jmeter-3.1"/>
+    
+    <!--jmeter生成jtl格式的结果报告的路径-->
+    <property name="jmeter.result.jtl.dir" value="C:\Users\Administrator\Desktop\JMeter and jdk\apache-jmeter-3.1\loadtests\jmeter_result.jtl"/>
+	<!--jemter生成HTML格式的结果报告的路径-->
+
+    <property name="jmeter.result.html.dir" value="C:\Users\Administrator\Desktop\JMeter and jdk\apache-jmeter-3.1\loadtests\jmeter_result.html"/>
+    
+	<target name="all">
+	  <antcall target="test"/>
+	  <antcall target="report"/>
+	</target>
+	<!--测试脚本--> 
+    <target name="test" >
+      <taskdef name="jmeter" classname="org.programmerplanet.ant.taskdefs.jmeter.JMeterTask"/>
+     
+     <jmeter jmeterhome="${jmeter.home}" resultlog="${jmeter.result.jtlName}">
+    <!--声明要运行的脚本，”.jmx"指包含此目录下的所有jmeter脚本-->
+    <testplans dir="C:\Users\Administrator\Desktop\JMeter and jdk\apache-jmeter-3.1\loadtests\" includes="*.jmx"/>  
+
+	<!-- Force suitable defaults -->
+	<property name="jmeter.save.saveservice.output_format" value="xml"/>
+	<property name="jmeter.save.saveservice.assertion_results" value="all"/>
+	<property name="jmeter.save.saveservice.bytes" value="true"/>
+	<property name="file_format.testlog" value="${format}"/>
+	<property name="jmeter.save.saveservice.response_data.on_error" value="${funcMode}"/>
+	</jmeter>
+    </target>
+	<!--生成报告-->
+	<target name="report">
+	<xslt
+		in="C:\Users\Administrator\Desktop\JMeter and jdk\apache-jmeter-3.1\loadtests\jmeter_result.jtl"
+		out="C:\Users\Administrator\Desktop\JMeter and jdk\apache-jmeter-3.1\loadtests\jmeter_result.html"
+		style="${jmeter.home}\extras\jmeter-results-detail-report_21.xsl"/>
+	</target>
+</project>
+
+    
